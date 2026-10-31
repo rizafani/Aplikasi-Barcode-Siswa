@@ -1,0 +1,8 @@
+{
+  "name": "Sistem Absensi Siswa Barcode NISN",
+  "description": "Aplikasi absensi siswa otomatis berbasis scan barcode NISN dengan jam digital presisi, verifikasi profil siswa, riwayat kehadiran, dan import data Excel.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

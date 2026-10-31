@@ -1,0 +1,55 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.:]+$');
+    }
+
+    // Students collection rules
+    match /students/{studentId} {
+      allow read: if true;
+      allow create, update: if isValidId(studentId)
+        && request.resource.data.nisn is string
+        && request.resource.data.nisn.size() <= 20
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.class is string
+        && request.resource.data.class.size() <= 30
+        && (request.resource.data.gender == 'L' || request.resource.data.gender == 'P');
+      allow delete: if isValidId(studentId);
+    }
+
+    // Attendance records rules
+    match /attendance/{recordId} {
+      allow read: if true;
+      allow create, update: if isValidId(recordId)
+        && request.resource.data.nisn is string
+        && request.resource.data.nisn.size() <= 20
+        && request.resource.data.studentName is string
+        && request.resource.data.studentName.size() <= 100
+        && request.resource.data.date is string
+        && request.resource.data.date.size() <= 15
+        && request.resource.data.status in ['HADIR', 'TERLAMBAT', 'IZIN', 'SAKIT', 'ALPA'];
+      allow delete: if isValidId(recordId);
+    }
+
+    // School Settings collection rules
+    match /settings/{settingsId} {
+      allow read: if true;
+      allow write: if isValidId(settingsId)
+        && request.resource.data.schoolName is string
+        && request.resource.data.schoolName.size() <= 100;
+    }
+
+    // Test connection doc
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}

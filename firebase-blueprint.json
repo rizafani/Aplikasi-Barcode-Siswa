@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Indonesian school student registered with NISN",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nisn": { "type": "string", "maxLength": 20 },
+        "name": { "type": "string", "maxLength": 100 },
+        "class": { "type": "string", "maxLength": 30 },
+        "gender": { "type": "string", "enum": ["L", "P"] },
+        "guardianPhone": { "type": "string", "maxLength": 30 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "email": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 300 }
+      },
+      "required": ["nisn", "name", "class", "gender"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Daily check-in and check-out attendance record for a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string", "maxLength": 100 },
+        "nisn": { "type": "string", "maxLength": 20 },
+        "studentName": { "type": "string", "maxLength": 100 },
+        "studentClass": { "type": "string", "maxLength": 30 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "date": { "type": "string", "maxLength": 10 },
+        "checkInTime": { "type": "string", "maxLength": 20 },
+        "checkOutTime": { "type": "string", "maxLength": 20 },
+        "status": { "type": "string", "enum": ["HADIR", "TERLAMBAT", "IZIN", "SAKIT", "ALPA"] },
+        "notes": { "type": "string", "maxLength": 300 },
+        "scannedAt": { "type": "number" }
+      },
+      "required": ["nisn", "studentName", "date", "status", "scannedAt"]
+    },
+    "SchoolSettings": {
+      "title": "SchoolSettings",
+      "description": "System configuration and attendance window settings",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string", "maxLength": 100 },
+        "schoolAddress": { "type": "string", "maxLength": 250 },
+        "schoolLogoText": { "type": "string", "maxLength": 20 },
+        "checkInStartTime": { "type": "string", "maxLength": 10 },
+        "lateThresholdTime": { "type": "string", "maxLength": 10 },
+        "checkOutStartTime": { "type": "string", "maxLength": 10 },
+        "soundEnabled": { "type": "boolean" },
+        "autoCloseModalSeconds": { "type": "number" }
+      },
+      "required": ["schoolName", "lateThresholdTime", "checkOutStartTime"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Collection of registered school students"
+    },
+    "/attendance/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Daily student attendance records"
+    },
+    "/settings/{settingsId}": {
+      "schema": "SchoolSettings",
+      "description": "School attendance system configuration"
+    }
+  }
+}
