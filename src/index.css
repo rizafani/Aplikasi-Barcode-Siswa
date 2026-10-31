@@ -21,3 +21,22 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.6);
 }
+
+/* Ensure camera video fills scanner container cleanly */
+#barcode-reader-container {
+  border: none !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+#barcode-reader-container video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0.75rem !important;
+}
+
+#barcode-reader-container img[alt="Info icon"] {
+  display: none !important;
+}
+
